@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This launch file launches gazebo server and client first, then the rest of
+     simulation with a delay
+
+    Motivation:
+        The delay is needed as spawning of model seems to interfer with
+        initialization of gzclient causing it to crash often
+
+    timed_roslaunch.sh handles the delay and launch the launch file you provide
+
+    Usage:
+        roslaunch crazyflie_simulator manager.launch launch:=<launch_file.launch>
+-->
+
+<launch>
+
+    <!-- Arguments -->
+    <arg name="launch" default=""/>
+    <!-- gazebo -->
+    <arg name="use_gazebo" default="true"/>
+    <!-- vicon -->
+    <arg name="random_shuffle" default="true" />
+    <arg name="use_multi_markers" default="false" />
+    <arg name="vicon_pub_rate" default="200" />
+    <arg name="vicon_pub_topic" default="/vicon/markers" />
+    <!-- dronesim -->
+    <arg name="cmd_topic" default="/SwarmCmds"/>
+    <arg name="state_topic" default="/full_state"/>
+    <!-- name of type of vehicle -->
+    <arg name="vehicle" default="Drone"/>
+    <!-- controller -->
+    <arg name="controller_type" default="pid"/>
+    <arg name="reference_source" default="true_state"/>
+    <!-- noise and disturbance -->
+    <arg name="include_noise" default="false"/>
+    <arg name="include_disturbance" default="false"/>
+    <!-- collision detection -->
+    <arg name="detect_collision" default="false"/>
+
+
+    <!-- gazebo -->
+    <include if="$(arg use_gazebo)" file="$(find crazyflie_sim)/launch/gazebo/quadrocopter_world.launch"/>
+
+    <!-- launch the simulation with 3 seconds delay-->
+    <node name="timed_roslaunch" pkg="crazyflie_sim" type="timed_roslaunch.sh" output="screen"
+         args="3 crazyflie_sim $(arg launch)
+                 use_gazebo:=$(arg use_gazebo)
+                 random_shuffle:=$(arg random_shuffle)
+                 use_multi_markers:=$(arg use_multi_markers)
+                 vicon_pub_rate:=$(arg vicon_pub_rate)
+                 vicon_pub_topic:=$(arg vicon_pub_topic)
+                 cmd_topic:=$(arg cmd_topic)
+                 state_topic:=$(arg state_topic)
+                 vehicle:=$(arg vehicle)
+                 controller_type:=$(arg controller_type)
+                 reference_source:=$(arg reference_source)
+                 include_noise:=$(arg include_noise)
+                 include_disturbance:=$(arg include_disturbance)
+                 detect_collision:=$(arg detect_collision)">
+    </node>
+
+
+</launch>

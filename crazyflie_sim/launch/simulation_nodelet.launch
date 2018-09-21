@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- launch simulation environment -->
+<!-- enivronment includes 
+        gazebo model if neccessary
+        dronesim
+        vicon
+-->
+<!-- nobs
+        use_gazebo
+        use_vicon
+-->
+<launch>
+
+    <!-- gazebo -->	
+    <arg name="use_gazebo" default="false"/>
+    <arg name="quad_sdf" default="$(find crazyflie_sim)/gazebo/models/quadrotor_ardrone/model.sdf" />
+
+    <!-- vicon -->
+    <arg name="random_shuffle" default="true" />
+    <arg name="use_multi_markers" default="false" />
+    <arg name="vicon_pub_rate" default="100" />
+    <arg name="vicon_pub_topic" default="/vicon/markers" />
+
+    <!-- dronesim -->
+    <arg name="cmd_topic" default="/SwarmCmds"/>
+    <arg name="state_topic" default="/full_state"/>
+
+    <!-- name of type of vehicle -->
+    <arg name="vehicle" default="Drone"/>
+
+    <!-- controller -->
+    <arg name="controller_type" default="pid"/> <!-- "pid" or "Mellinger" -->
+    <arg name="reference_source" default="true_state"/> <!-- "true_state" or "estimated_state" -->
+
+    <!-- noise and disturbance -->
+    <arg name="include_noise" default="false"/>
+    <arg name="include_disturbance" default="false"/>
+
+    <!-- collision detection -->
+    <arg name="detect_collision" default="false"/>
+
+
+
+	<!-- parameters -->
+	<group ns="simulator">
+        <param name="random_shuffle" value="$(arg random_shuffle)" />
+		<param name="vicon_pub_rate" value="$(arg vicon_pub_rate)" />	
+        <param name="pub_topic" value="$(arg vicon_pub_topic)" />
+        <param name="use_multi_markers" value="$(arg use_multi_markers)" />
+        <param name="cmd_topic" value="$(arg cmd_topic)"/>
+        <param name="state_topic" value="$(arg state_topic)"/>
+        <param name="use_gazebo" value="$(arg use_gazebo)"/>
+        <param name="include_noise" value="$(arg include_noise)"/>
+        <param name="include_disturbance" value="$(arg include_disturbance)"/>
+        <param name="detect_collision" value="$(arg detect_collision)"/>
+
+        <param name="name" value="$(arg vehicle)"/>
+        <param name="controller_type" value="$(arg controller_type)" />
+        <param name="reference_source" value="$(arg reference_source)"/>
+        <rosparam command="load" file="$(find crazyflie_central)/config/vehicles_config.yaml" />
+        <rosparam command="load" file="$(find crazyflie_central)/config/pid.yaml" />
+	</group>
+
+    <!-- The Drone Simulator! This node is responsible for the inner control loop and the drone dynamics -->
+	<!-- Simulator could simulate arbitrary number of drones -->
+    <!-- The number of drone the simulator is simulating is spesificed in crazyflie_central luanch file -->
+    <node pkg="nodelet" type="nodelet" name="dronesim"
+          args="load DroneSimNodelet CriticalNodes" output="screen">
+    </node>
+
+    <!-- Gazebo drones -->
+    <group if="$(arg use_gazebo)">
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)1"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)2"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)3"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)4"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)5"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)6"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)7"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)8"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)9"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)10"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)11"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)12"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)13"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)14"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)15"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)16"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)17"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)18"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)19"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+
+        <include file="$(find crazyflie_sim)/launch/gazebo/spawn_quadrotor.launch">
+            <arg name="quad_name" value="$(arg vehicle)20"/>
+            <arg name="quad_sdf" value="$(arg quad_sdf)"/>
+        </include>
+    </group>
+
+</launch>

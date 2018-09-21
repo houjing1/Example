@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+ <launch>
+   <arg name="quad_sdf" default="$(find crazyflie_simulator)/gazebo/models/quadrotor_ardrone/model.sdf"/>
+   <arg name="tag_sdf"  default="$(find crazyflie_simulator)/gazebo/models/path_marker/model.sdf"/>
+   <arg name="x" default="0.0"/>
+   <arg name="y" default="0.0"/>
+   <arg name="z" default="0.0"/>
+   <arg name="R" default="0.0"/>
+   <arg name="P" default="0.0"/>
+   <arg name="Y" default="0.0"/>
+   <arg name="quad_name" default="quad_drone"/>
+   <arg name="tag_name" default="$(arg quad_name)_tag"/>
+
+   <!-- send the robot XML to param server -->
+   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg quad_sdf)'" />
+   
+   <!-- push robot_description to factory and spawn robot in gazebo -->
+   <node name="$(arg quad_name)" pkg="gazebo_ros" type="spawn_model"
+   args="-param robot_description
+   -sdf
+   -x '$(arg x)'
+   -y '$(arg y)'
+   -z '$(arg z)'
+   -R '$(arg R)'
+   -P '$(arg P)'
+   -Y '$(arg Y)'
+   -model '$(arg quad_name)' "
+     respawn="false" output="screen"/>
+
+   <!-- send the robot XML to param server -->
+   <param name="tag_description" command="$(find xacro)/xacro --inorder '$(arg tag_sdf)'" />
+
+   <!-- push robot_description to factory and spawn robot in gazebo -->
+   <node name="$(arg tag_name)" pkg="gazebo_ros" type="spawn_model"
+   args="-param tag_description
+   -sdf
+   -x '$(arg x)'
+   -y '$(arg y)'
+   -z '$(arg z)'
+   -R '$(arg R)'
+   -P '$(arg P)'
+   -Y '$(arg Y)'
+   -model '$(arg tag_name)' "
+     respawn="false" output="screen"/>
+     
+ </launch>
+   
